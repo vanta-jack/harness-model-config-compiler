@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "deepnote": {
+      "serverUrl": "https://deepnote.com/mcp",
+      "headers": {
+        "Authorization": "Bearer {{.DEEPNOTE_TOKEN}}"
+      }
+    }
+  }
+}

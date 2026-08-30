@@ -1,0 +1,29 @@
+# Environment & Secrets
+.env
+.env.local
+*.env
+.agents/mcp_config.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Jupyter & Deepnote Cache / Snapshots
+.ipynb_checkpoints/
+snapshots/
+.deepnote-sync.json
+
+# Build & Package Artifacts
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.ruff_cache/
+
+# Datasets (Track .gitkeep only)
+datasets/*.json
+!datasets/.gitkeep
