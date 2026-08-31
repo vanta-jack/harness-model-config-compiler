@@ -1,6 +1,6 @@
 # ADR 003: Core Python Package Layout, Modular Compilers, and Dataset Vault Taxonomy
 
-* **Status**: Accepted
+* **Status**: Superseded by ADR 004 (Notebook-Driven Architecture)
 * **Date**: 2026-08-30
 * **Category**: Diátaxis Explanation / Architectural Decision Record (ADR)
 * **Domain**: Codebase Architecture & Data Engineering
