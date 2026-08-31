@@ -24,6 +24,4 @@ build/
 .pytest_cache/
 .ruff_cache/
 
-# Datasets (Track .gitkeep only)
-datasets/*.json
-!datasets/.gitkeep
+
