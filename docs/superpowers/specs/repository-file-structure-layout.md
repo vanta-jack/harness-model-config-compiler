@@ -12,7 +12,7 @@ This specification governs solely the dynamic synchronization and generated arti
 
 ```text
 harness-model-config-compiler/
-├── deepnote/                        # Workspace-wide sync viewing deck (mostly gitignored)
+├── deepnote-workspace/                        # Workspace-wide sync viewing deck (mostly gitignored)
 └── notebooks/                       # Generated/downstream notebooks (mostly gitignored)
 ```
 
@@ -20,7 +20,7 @@ harness-model-config-compiler/
 
 ## 2. Directory Roles
 
-### A. deepnote/ (Workspace Viewing Deck)
+### A. deepnote-workspace/ (Workspace Viewing Deck)
 * Populated via `deepnote sync` from the Deepnote Cloud workspace.
 * Contains the entire synchronized workspace hierarchy, including projects outside `harness-model-config-compiler`.
 * Zero hardcoded assumptions: expect anything or nothing in this directory.
