@@ -1,71 +1,32 @@
 # Spec: Repository File Structure Layout
 
-> [!CAUTION]
-> **DO NOT IMPLEMENT THIS SPEC YET**
-> This specification was designed around the flawed premise in [ADR 007](../../decisions/007-notebook-format-and-distribution-hierarchy.md) assuming that Deepnote Cloud's Web UI Git integration can export `.deepnote` YAML files directly.
-> Per [ADR 008](../../decisions/008-deepnote-format-ingestion-and-cli-sync.md), Deepnote's Web UI strictly exports `.ipynb` files, and `.deepnote` files require CLI-level synchronization (`deepnote sync`).
-
-* **Status**: Accepted / Final
+* **Status**: Accepted
 * **Date**: 2026-09-01
 * **Category**: Specification
-* **Aligned With**: [ADR 006: Repository Role & Execution Boundary](../../decisions/006-repository-role-and-execution-boundary.md) and [ADR 007: Notebook Format Hierarchy and Asynchronous Distribution](../../decisions/007-notebook-format-and-distribution-hierarchy.md)
-* **Supersedes**: Dataset placement convention from ADR 003
 
 ---
 
-## 1. Context
+## 1. Canonical Layout Scope
 
-Following ADR 006 and ADR 007, this repository functions as a **shape-tracking scaffold** where authoring and execution occur in Deepnote Cloud. This specification defines the canonical top-level folder layout and operational boundaries of the repository.
-
----
-
-## 2. Canonical Layout
+This specification governs solely the dynamic synchronization and generated artifact directories:
 
 ```text
-model-config-crafter/
-├── deepnote/                        # Primary Source of Truth: .deepnote files
-│   ├── *.deepnote                   # Native YAML notebooks (inspected/verified by agents)
-│   └── snapshots/                   # CLI run outputs (gitignored)
-├── notebooks/                       # Downstream export artifacts (.ipynb)
-│   └── *.ipynb                      # Generated on-demand via deepnote convert
-├── sample-datasets/                 # Tracked reference dataset samples
-├── datasets/                        # Gitignored local scratchpad (NOT an architectural artifact)
-├── docs/
-│   ├── decisions/                   # Architectural Decision Records (ADRs)
-│   ├── superpowers/
-│   │   └── specs/                   # Implementation specifications (including this file)
-│   └── postmortems/                 # Operational incident post-mortems
-└── .agents/                         # Agent tooling, skills, and MCP configurations
+harness-model-config-compiler/
+├── deepnote/                        # Workspace-wide sync viewing deck (mostly gitignored)
+└── notebooks/                       # Generated/downstream notebooks (mostly gitignored)
 ```
 
 ---
 
-## 3. Directory Contracts & Responsibilities
+## 2. Directory Roles
 
-### A. `deepnote/` (Primary Source of Truth)
-* **Format**: `.deepnote` (YAML).
-* **Ingestion**: Pushed from Deepnote Cloud via its GitHub integration, or updated programmatically via Deepnote MCP.
-* **Role**: The authoritative representation of the project's logic, pipeline DAGs, and UI widget schemas ([ADR 005](../../decisions/005-deepnote-input-widget-metadata-schema.md)). AI coding agents inspect and verify project state against files in this folder.
+### A. deepnote/ (Workspace Viewing Deck)
+* Populated via `deepnote sync` from the Deepnote Cloud workspace.
+* Contains the entire synchronized workspace hierarchy, including projects outside `harness-model-config-compiler`.
+* Zero hardcoded assumptions: expect anything or nothing in this directory.
+* Used strictly as a local, read-only viewing deck for inspection.
+* The repository does not depend on the internal structure of this folder. It is largely gitignored.
 
-### B. `notebooks/` (On-Demand Export Target)
-* **Format**: `.ipynb` (JSON).
-* **Generation**: Generated on-demand using the Deepnote CLI:
-  ```bash
-  deepnote convert deepnote/<notebook>.deepnote -t ipynb -o notebooks/<notebook>.ipynb
-  ```
-* **Role**: Downstream distribution target for external environments (Google Colab, Kaggle, local JupyterLab).
-* **Parity Policy**: Explicitly asynchronous. 100% real-time synchronization with `deepnote/` is not required or enforced.
-
-### C. `sample-datasets/` (Tracked Reference Samples)
-* **Role**: Contains small, anonymized, or illustrative dataset samples version-controlled in Git for documentation, schema testing, and reference examples.
-
-### D. `datasets/` (Local Scratchpad)
-* **Role**: Local temporary data store. Strictly gitignored. It is not an architectural artifact and carries no runtime dependency for Deepnote Cloud execution.
-
----
-
-## 4. Key Architectural Principles
-
-1. **Flat Project Structure**: As a single-tool repository ([ADR 002](../../decisions/002-deepnote-workspace-sync-boundaries.md)), notebooks sit directly under `deepnote/` and `notebooks/` without redundant project-level subfolder nesting.
-2. **Encapsulation of Cloud Execution**: Notebook execution occurs in Deepnote Cloud. The local repository does not replicate cloud `/work` paths.
-3. **Diff Hygiene**: Only `.deepnote` YAML files are tracked for day-to-day development, keeping Git commits concise and meaningful.
+### B. notebooks/ (Generated Notebooks)
+* Storage for notebooks generated or converted from Deepnote.
+* Mostly gitignored.
