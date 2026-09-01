@@ -1,5 +1,10 @@
 # Spec: Repository File Structure Layout
 
+> [!CAUTION]
+> **DO NOT IMPLEMENT THIS SPEC YET**
+> This specification was designed around the flawed premise in [ADR 007](../../decisions/007-notebook-format-and-distribution-hierarchy.md) assuming that Deepnote Cloud's Web UI Git integration can export `.deepnote` YAML files directly.
+> Per [ADR 008](../../decisions/008-deepnote-format-ingestion-and-cli-sync.md), Deepnote's Web UI strictly exports `.ipynb` files, and `.deepnote` files require CLI-level synchronization (`deepnote sync`).
+
 * **Status**: Accepted / Final
 * **Date**: 2026-09-01
 * **Category**: Specification
