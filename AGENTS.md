@@ -8,7 +8,11 @@
 
 - Read the Deepnote skill and use Deepnote MCP to work with notebooks
 - Interact with the cloud notebook directly via **Deepnote MCP tools** (`update_block`, `create_block`, `get_notebook`, `get_project`) using the resolved `DEEPNOTE_PROJECT_ID`.
-- 
+- **Resolving Cloud Notebook IDs**: Deepnote MCP summarization omits child `notebookId` arrays. When an ID is unresolved, query Deepnote Public REST API v2 using the auditable helper script in `.agents/skills/deepnote-extras/`:
+  ```bash
+  set -a && [ -f .env ] && source .env && set +a && .agents/skills/deepnote-extras/scripts/list_project_notebooks.sh
+  ```
+- Files on disk use `kebab-case` (`models-list.json`, `pinned-models.json`); Python variables use `snake_case`.
 
 
 
